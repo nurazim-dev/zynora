@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
 }
@@ -38,7 +37,7 @@ a {
   width: auto;
   max-width: 100%;
   padding: 10px 20px;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   float: none;
 }
@@ -57,7 +56,7 @@ nav {
   width: auto;
   max-width: 100%;
   padding: 10px 20px;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   float: none;
 }
@@ -71,7 +70,7 @@ nav a {
 }
 
 nav a:hover {
-  color: #A87545;
+  color: #a87545;
 }
 
 .footer {
@@ -81,7 +80,7 @@ nav a:hover {
   min-height: 80px;
   padding: 15px 20px;
   margin-top: 40px;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
 }
 
@@ -105,7 +104,7 @@ nav a:hover {
 .welcome h1 {
   padding: 12px;
   color: #695439;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   text-align: center;
   font-size: 32px;
@@ -114,12 +113,12 @@ nav a:hover {
 
 .welcome strong,
 menu b {
-  color: #A87545;
+  color: #a87545;
 }
 
 .welcome-content {
   padding: 20px;
-  background-color: #FFFDF9;
+  background-color: #fffdf9;
   border-radius: 8px;
 }
 
@@ -128,7 +127,7 @@ menu b {
   max-width: 100%;
   padding: 8px;
   color: #484343;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   font-size: 20px;
   overflow-wrap: anywhere;
@@ -150,7 +149,7 @@ menu b {
   margin: 20px 0;
   padding: 12px;
   color: #695439;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
   font-size: 32px;
@@ -174,7 +173,7 @@ menu b {
   gap: 10px;
   min-width: 0;
   padding: 16px;
-  background-color: #FFFDF9;
+  background-color: #fffdf9;
   border-radius: 8px;
 }
 
@@ -196,7 +195,7 @@ menu b {
 .product p {
   margin: 0;
   padding: 5px;
-  color: #A87545;
+  color: #a87545;
   border: 1px solid rgb(207, 164, 108);
   border-radius: 5px;
   text-align: center;
@@ -211,12 +210,14 @@ menu b {
   font-family: "Gill Sans", Calibri, sans-serif;
   text-decoration: none;
   text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .product a:hover {
   color: white;
-  background-color: #A87545;
+  background-color: #a87545;
 }
 
 #product-title {
@@ -231,7 +232,7 @@ menu b {
   gap: 30px;
   width: 100%;
   padding: 20px;
-  background-color: #FFFDF9;
+  background-color: #fffdf9;
   border-radius: 8px;
 }
 
@@ -273,20 +274,25 @@ menu b {
   max-width: 100%;
   padding: 12px 25px;
   color: #695439;
-  background-color: #E8D3B0;
-  border: 1px solid #A87545;
+  background-color: #e8d3b0;
+  border: 1px solid #a87545;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.buy-button:hover {
+.buy-button:hover,
+.form .push:hover {
   color: white;
-  background-color: #A87545;
+  background-color: #a87545;
 }
 
-.buy-button:active {
+.buy-button:active,
+.form .push:active {
   color: white;
   background-color: #695439;
   transform: scale(0.97);
@@ -363,7 +369,7 @@ menu b {
 }
 
 .form label {
-  color: #A87545;
+  color: #a87545;
 }
 
 .form input,
@@ -372,11 +378,29 @@ menu b {
   max-width: 100%;
   padding: 8px;
   color: #695439;
-  background-color: #FFFDF9;
-  border: 1px solid #A87545;
+  background-color: #fffdf9;
+  border: 1px solid #a87545;
   border-radius: 8px;
   font-family: "Lucida Sans", sans-serif;
   font-size: 16px;
+}
+
+.form .push {
+  width: 50%;
+  max-width: 100%;
+  padding: 8px;
+  color: #695439;
+  background-color: #fffdf9;
+  border: 1px solid #a87545;
+  border-radius: 8px;
+  font-family: "Lucida Sans", sans-serif;
+  font-size: 16px;
+  margin-left: 100px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .form input {
@@ -390,8 +414,8 @@ menu b {
 
 .form input:focus,
 .form textarea:focus {
-  border-color: #A87545;
-  outline: 2px solid #E8D3B0;
+  border-color: #a87545;
+  outline: 2px solid #e8d3b0;
   outline-offset: 2px;
 }
 
@@ -410,7 +434,7 @@ menu b {
 
 #form {
   margin: 0;
-  color: #A87545;
+  color: #a87545;
   font-family: "Gill Sans", sans-serif;
   font-size: 40px;
   font-weight: 600;
@@ -420,7 +444,7 @@ menu b {
 #form2,
 #form3 {
   margin: 0;
-  color: #A87545;
+  color: #a87545;
   font-family: "Gill Sans", sans-serif;
   font-size: 28px;
   font-weight: 600;
@@ -450,7 +474,7 @@ menu {
   width: fit-content;
   max-width: 100%;
   padding: 10px;
-  background-color: #FFFDF9;
+  background-color: #fffdf9;
   border-radius: 8px;
 }
 
@@ -459,7 +483,7 @@ menu h4 {
   max-width: 100%;
   padding: 5px;
   color: #484343;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
   overflow-wrap: anywhere;
 }
@@ -478,7 +502,7 @@ input,
 legend,
 fieldset {
   border-radius: 8px;
-  border-color: #A87545;
+  border-color: #a87545;
 }
 
 @media (max-width: 900px) {
@@ -686,7 +710,6 @@ fieldset {
   }
 }
 
-
 .container,
 .cont {
   width: 100%;
@@ -701,7 +724,7 @@ fieldset {
   justify-content: space-between;
   gap: 20px;
   padding: 0 30px;
-  background-color: #E8D3B0;
+  background-color: #e8d3b0;
   border-radius: 8px;
 }
 
@@ -745,8 +768,13 @@ fieldset {
 }
 
 .main-header .nav a:hover {
-  color: #A87545;
+  color: #a87545;
 }
+
+/* .form .push:hover {
+  background-color: #e8d3b0;
+  color: white;
+} */
 
 @media (max-width: 600px) {
   .cont {
