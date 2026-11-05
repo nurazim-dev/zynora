@@ -1,89 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu</title>
-  <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="cont">
+      <header class="main-header">
+        <a href="../html/home-page.html">
+          <img src="../image/logo.png" alt="ZYNORA" class="logo" />
+        </a>
 
-  <div class="cont">
-    <header class="main-header">
-      <a href="../html/home-page.html">
-        <img src="../image/logo.png" alt="ZYNORA" class="logo">
-      </a>
+        <nav class="nav">
+          <a href="../html/home-page.html">Главная</a>
+          <a href="../html/catalog-page.html">Каталог</a>
+          <a href="../html/contact-page.html">Контакты</a>
+        </nav>
+      </header>
+    </div>
 
-      <nav class="nav">
-        <a href="../html/home-page.html">Главная</a>
-        <a href="../html/catalog-page.html">Каталог</a>
-        <a href="../html/contact-page.html">Контакты</a>
-      </nav>
-    </header>
-  </div>
-  
-  <section class="welcome1">
+    <section class="welcome1">
       <h1 id="catalog">Контакты</h1>
     </section>
 
-  <h1 id="form">Напишите нам</h1>
+    <h1 id="form">Напишите нам</h1>
 
-  
-<form action="" class="form">
-    <fieldset>
+    <form action="" class="form">
+      <fieldset>
         <legend>Поля для заполнения</legend>
 
         <div class="form-in">
           <label for="name">Ваше имя:</label>
-          <input type="text" id="name" size="30" placeholder="Ваше имя">
+          <input type="text" id="name" size="30" placeholder="Ваше имя" />
         </div>
 
         <div class="form-in">
           <label for="email">Ваш email:</label>
-          <input type="email" id="email" size="30" placeholder="Ваш email">
+          <input type="email" id="email" size="30" placeholder="Ваш email" />
         </div>
 
         <div class="form-in">
           <label for="subject">Тема сообщения:</label>
-          <input type="text" id="subject" size="30" placeholder="Тема сообщения">
+          <input
+            type="text"
+            id="subject"
+            size="30"
+            placeholder="Тема сообщения"
+          />
         </div>
 
         <div class="form-in">
           <label for="message">Ваше сообщение:</label>
-          <textarea id="message" rows="5" cols="32" placeholder="Введите ваше сообщение..."></textarea>
+          <textarea
+            id="message"
+            rows="5"
+            cols="32"
+            placeholder="Введите ваше сообщение..."
+          ></textarea>
         </div>
-    </fieldset>
-</form>
+        <div class="form-in">
+          <button class="push">Отправить</button>
+        </div>
+      </fieldset>
+    </form>
 
+    <h1 id="form2">Адрес</h1>
+    <ul class="contact">
+      <li>+996700222999</li>
+      <li>ЦУМ</li>
+      <li>zynora@gmail.com</li>
+    </ul>
 
-  <h1 id="form2">Адрес</h1>
-  <ul class="contact">
-    <li>+996700222999</li>
-    <li>ЦУМ</li>
-    <li>zynora@gmail.com</li>
-  </ul>
-
-
-  <section>
+    <section>
       <h2 id="form3">Наше местоположение</h2>
 
       <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.8429638771763!2d74.61189947669646!3d42.876158571149666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c0cdbbae15%3A0xa6b565413fa531df!2z0KbQo9Cc!5e0!3m2!1sru!2skg!4v1792611843768!5m2!1sru!2skg"
-          width="500"
-          height="300"
-          style="border: 0;"
-          allowfullscreen
-          loading="lazy">
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.8429638771763!2d74.61189947669646!3d42.876158571149666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x389eb7c0cdbbae15%3A0xa6b565413fa531df!2z0KbQo9Cc!5e0!3m2!1sru!2skg!4v1792611843768!5m2!1sru!2skg"
+        width="500"
+        height="300"
+        style="border: 0"
+        allowfullscreen
+        loading="lazy"
+      >
       </iframe>
-  </section>
-  
+    </section>
 
+    <hr />
 
-  <hr>
-
-  <div class="footer">
-    <p>&copy; ZYNORA. Все права защищены</p>
-  </div>
-
-</body>
+    <div class="footer">
+      <p>&copy; ZYNORA. Все права защищены</p>
+    </div>
+  </body>
 </html>
