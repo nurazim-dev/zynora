@@ -75,9 +75,10 @@ nav a:hover {
 
 .footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  min-height: 80px;
+  min-height: 40px;
+  max-height: 40px;
   padding: 15px 20px;
   margin-top: 40px;
   background-color: #e8d3b0;
@@ -85,7 +86,6 @@ nav a:hover {
 }
 
 .footer p {
-  margin: 0;
   color: #807e7e;
 }
 
@@ -660,13 +660,6 @@ fieldset {
   iframe {
     height: 300px;
   }
-
-  .footer {
-    justify-content: center;
-    min-height: 70px;
-    padding: 15px 10px;
-    text-align: center;
-  }
 }
 
 @media (max-width: 360px) {
@@ -718,7 +711,7 @@ fieldset {
 }
 
 .main-header {
-  height: 100px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
