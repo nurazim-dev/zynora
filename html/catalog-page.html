@@ -1,56 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catalog</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Каталог Apple MacBook в ZYNORA. Выберите свою технологию.">
+  <title>Каталог — ZYNORA</title><link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  
-  <div class="cont">
-    <header class="main-header">
-      <a href="../html/home-page.html">
-        <img src="../image/logo.png" alt="ZYNORA" class="logo">
-      </a>
-
-      <nav class="nav">
-        <a href="../html/home-page.html">Главная</a>
-        <a href="../html/catalog-page.html">Каталог</a>
-        <a href="../html/contact-page.html">Контакты</a>
-      </nav>
-    </header>
+  <div class="site-shell">
+    <header class="site-header"><a class="brand" href="/" aria-label="ZYNORA — главная"><img src="/image/logo.png" alt="ZYNORA"><span>Технологии будущего — уже сегодня</span></a><nav class="site-nav"><a href="/">Главная</a><a class="active" href="/html/catalog-page.html">Каталог</a><a href="/html/contact-page.html">Контакты</a><a href="/html/account-page.html">Аккаунт</a><a href="/favorites">Избранное</a><a href="/compare">Сравнение</a><a class="cart-link" href="/cart">Корзина <span data-cart-count hidden></span></a></nav></header>
+    <main class="page-main">
+      <section class="page-heading"><span class="eyebrow">ZYNORA · Каталог</span><h1>Технологии для<br><em>ваших задач.</em></h1><p>Найдите ноутбук, который станет естественным продолжением вашей работы и идей.</p></section>
+      <section class="catalog-toolbar" aria-label="Поиск и фильтры">
+        <label class="search-field"><span>Поиск</span><input id="catalog-search" type="search" placeholder="Название, бренд или категория"></label>
+        <label><span>Категория</span><select id="filter-category"><option value="">Все категории</option></select></label>
+        <label><span>Бренд</span><select id="filter-brand"><option value="">Все бренды</option></select></label>
+        <label><span>Цена от, сом</span><input id="min-price" type="number" min="0" placeholder="0"></label>
+        <label><span>Цена до, сом</span><input id="max-price" type="number" min="0" placeholder="Любая"></label>
+        <label><span>Сортировка</span><select id="catalog-sort"><option value="newest">Сначала новые</option><option value="price-asc">Сначала дешевле</option><option value="price-desc">Сначала дороже</option></select></label>
+      </section>
+      <div class="section-caption"><span>Каталог товаров</span><span data-catalog-count>Позиции: 00</span></div>
+      <section class="catalog-grid" data-catalog-grid aria-live="polite"><div class="loading-skeleton">Загружаем каталог…</div></section><nav class="catalog-pagination" data-catalog-pagination aria-label="Страницы каталога"></nav>
+    </main>
+    <footer class="site-footer"><span>© ZYNORA</span><span>Технологии будущего — уже сегодня.</span><a href="/html/contact-page.html">Связаться с нами</a></footer>
   </div>
-
-  <section class="welcome1">
-      <h1 id="catalog">Каталог</h1>
-    </section>
-
-  <div class="catalog">
-
-    <div class="product">
-        <img src="../image/m5.webp" alt="MacBook M5">
-        <p>MacBook Air M5</p>
-        <a href="mac-m5.html">Подробнее</a>
-    </div>
-
-    <div class="product">
-        <img src="../image/m4.jpeg" alt="MacBook M4">
-        <p>MacBook Air M4</p>
-        <a href="mac-m4.html">Подробнее</a>
-    </div>
-
-    <div class="product">
-        <img src="../image/m3.webp" alt="MacBook M3" id="mac1">
-        <p>MacBook Air M3</p>
-        <a href="mac-m3.html">Подробнее</a>
-    </div>
-
-</div>
-
-  <div class="footer">
-    <p>&copy; ZYNORA. Все права защищены</p>
-  </div>
-
+  <script src="/scripts/store.js" defer></script>
 </body>
 </html>

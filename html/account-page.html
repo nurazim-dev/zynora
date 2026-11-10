@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Аккаунт — ZYNORA</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/"
+          ><img src="/image/logo.png" alt="ZYNORA" /><span
+            >Технологии будущего — уже сегодня</span
+          ></a
+        >
+        <nav class="site-nav">
+          <a href="/">Главная</a><a href="/html/catalog-page.html">Каталог</a
+          ><a href="/html/contact-page.html">Контакты</a
+          ><a class="active" href="/html/account-page.html">Аккаунт</a
+          ><a href="/favorites">Избранное</a><a href="/compare">Сравнение</a
+          ><a class="cart-link" href="/cart"
+            >Корзина <span data-cart-count hidden></span
+          ></a>
+        </nav>
+      </header>
+      <main class="page-main">
+        <section class="page-heading">
+          <span class="eyebrow">Личный кабинет</span>
+          <h1>Ваш аккаунт</h1>
+          <p>Войдите, чтобы сохранять избранное и смотреть историю заказов.</p>
+        </section>
+        <section class="panel account-card" data-account-root>
+          <div class="account-tabs">
+            <button
+              class="button button-primary"
+              data-account-tab="login"
+              type="button"
+            >
+              Войти</button
+            ><button
+              class="button button-secondary"
+              data-account-tab="register"
+              type="button"
+            >
+              Создать аккаунт
+            </button>
+          </div>
+          <form data-account-form>
+            <h2 data-account-title>Вход в аккаунт</h2>
+            <label class="field-label is-hidden" data-account-name-label
+              >Имя<input
+                class="field-input"
+                name="name"
+                minlength="2"
+                maxlength="100" /></label
+            ><label class="field-label"
+              >Email<input
+                class="field-input"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required /></label
+            ><label class="field-label"
+              >Пароль<input
+                class="field-input"
+                name="password"
+                type="password"
+                minlength="8"
+                maxlength="100"
+                autocomplete="current-password"
+                required /></label
+            ><button
+              class="button button-primary"
+              style="margin-top: 20px"
+              type="submit"
+              data-account-submit
+            >
+              Войти
+            </button>
+            <p class="small-help" data-account-message></p>
+          </form>
+          <section class="is-hidden" data-account-history>
+            <h2>История заказов</h2>
+            <div data-history-list></div>
+            <button
+              class="button button-secondary"
+              data-account-logout
+              type="button"
+            >
+              Выйти
+            </button>
+          </section>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <span>© ZYNORA</span><span>Технологии будущего — уже сегодня.</span
+        ><a href="/html/catalog-page.html">Каталог</a>
+      </footer>
+    </div>
+    <script src="/scripts/account.js" defer></script>
+    <script src="/scripts/store.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAYMENT_REPORTED
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum InventoryMovementType {
+  RECEIPT
+  ADJUSTMENT
+  RESERVE
+  RELEASE
+  SALE
+  RETURN
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id           Int          @id @default(autoincrement())
+  slug         String       @unique
+  name         String
+  brand        String       @default("Apple")
+  categoryId   Int
+  category     Category    @relation(fields: [categoryId], references: [id])
+  description  String       @db.Text
+  imagePath    String
+  specifications Json
+  price        Int?
+  stock        Int          @default(0)
+  reservedStock Int         @default(0)
+  lowStockThreshold Int     @default(3)
+  active       Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  orderItems   OrderItem[]
+  favorites    Favorite[]
+  reviews      Review[]
+  inventoryMovements InventoryMovement[]
+
+  @@index([categoryId, active])
+  @@index([brand])
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         UserRole   @default(CUSTOMER)
+  createdAt    DateTime   @default(now())
+  orders       Order[]
+  favorites    Favorite[]
+  reviews      Review[]
+}
+
+model Session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+  @@map("zynora_sessions")
+}
+
+model Favorite {
+  userId    Int
+  productId Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+}
+
+model Order {
+  id             Int                @id @default(autoincrement())
+  orderNumber    String             @unique
+  trackingToken  String             @unique
+  idempotencyKey String?            @unique
+  userId         Int?
+  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName   String
+  phone          String
+  city           String
+  address        String
+  comment        String?            @db.Text
+  subtotal       Int
+  discount       Int                @default(0)
+  delivery       Int                @default(0)
+  total          Int
+  status         OrderStatus        @default(PENDING_PAYMENT)
+  paymentReported Boolean          @default(false)
+  paymentReportedAt DateTime?
+  telegramAttempted Boolean        @default(false)
+  telegramNotified Boolean          @default(false)
+  telegramNotificationError String? @db.Text
+  couponId       Int?
+  coupon         Coupon?            @relation(fields: [couponId], references: [id], onDelete: SetNull)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  items          OrderItem[]
+  statusHistory  OrderStatusHistory[]
+  inventoryMovements InventoryMovement[]
+  reviews        Review[]
+
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+}
+
+model InventoryMovement {
+  id        Int                  @id @default(autoincrement())
+  productId Int
+  product   Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderId   Int?
+  order     Order?               @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  type      InventoryMovementType
+  quantity  Int
+  note      String?
+  createdAt DateTime             @default(now())
+
+  @@index([productId, createdAt])
+  @@index([orderId, createdAt])
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   Int?
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productName String
+  productSlug String
+  imagePath   String
+  unitPrice   Int
+  quantity    Int
+  review      Review?
+}
+
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  orderId   Int
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  from      OrderStatus?
+  to        OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+model Coupon {
+  id             Int          @id @default(autoincrement())
+  code           String       @unique
+  type           DiscountType
+  value          Int
+  minSubtotal    Int          @default(0)
+  expiresAt      DateTime?
+  usageLimit     Int?
+  uses           Int          @default(0)
+  active         Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  orders         Order[]
+}
+
+model Review {
+  id          Int          @id @default(autoincrement())
+  productId   Int
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId      Int?
+  user        User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  orderId     Int
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderItemId Int          @unique
+  orderItem   OrderItem    @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  authorName  String
+  rating      Int
+  text        String       @db.Text
+  status      ReviewStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+
+  @@index([productId, status])
+}
