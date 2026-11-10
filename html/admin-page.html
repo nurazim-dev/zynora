@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Администрирование — ZYNORA</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/"
+          ><img src="/image/logo.png" alt="ZYNORA" /><span
+            >Панель управления ZYNORA</span
+          ></a
+        >
+        <nav class="site-nav">
+          <a href="/">Магазин</a
+          ><button class="text-button" data-admin-logout hidden>Выйти</button>
+        </nav>
+      </header>
+      <main class="page-main">
+        <section class="admin-login panel" data-admin-login>
+          <span class="eyebrow">Доступ владельца</span>
+          <h1>Администрирование</h1>
+          <p class="muted">Войдите в аккаунт с ролью администратора.</p>
+          <form data-admin-login-form class="form">
+            <label
+              >Email<input
+                type="email"
+                name="email"
+                autocomplete="username"
+                required /></label
+            ><label
+              >Пароль<input
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                required /></label
+            ><button class="button button-primary" type="submit">Войти</button>
+            <p data-admin-login-error class="error-panel is-hidden"></p>
+          </form>
+        </section>
+        <section class="is-hidden" data-admin-app>
+          <div class="page-heading">
+            <span class="eyebrow">Панель управления</span>
+            <h1>Обзор магазина</h1>
+            <p>Заказы, остатки и продажи ZYNORA в одном месте.</p>
+          </div>
+          <div class="admin-layout">
+            <nav class="admin-sidebar">
+              <button class="active" data-admin-section="dashboard">
+                Обзор</button
+              ><button data-admin-section="orders">Заказы</button
+              ><button data-admin-section="products">Товары и остатки</button
+              ><button data-admin-section="coupons">Промокоды</button
+              ><button data-admin-section="reviews">Отзывы</button>
+            </nav>
+            <div>
+              <section
+                class="admin-section active"
+                data-admin-panel="dashboard"
+              >
+                <div class="metric-grid" data-admin-metrics></div>
+                <div class="two-column-layout">
+                  <section class="panel">
+                    <h2>Последние заказы</h2>
+                    <div class="admin-overflow">
+                      <table class="admin-table">
+                        <thead>
+                          <tr>
+                            <th>Номер</th>
+                            <th>Покупатель</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                          </tr>
+                        </thead>
+                        <tbody data-recent-orders></tbody>
+                      </table>
+                    </div>
+                  </section>
+                  <section class="panel">
+                    <h2>Остатки ≤ 3</h2>
+                    <div data-low-stock></div>
+                  </section>
+                </div>
+                <div class="two-column-layout" style="margin-top: 20px">
+                  <section class="panel">
+                    <h2>Лидеры продаж</h2>
+                    <div data-top-products></div>
+                  </section>
+                  <section class="panel">
+                    <h2>Популярные категории</h2>
+                    <div data-popular-categories></div>
+                  </section>
+                </div>
+              </section>
+              <section class="admin-section" data-admin-panel="orders">
+                <div class="panel">
+                  <h2>Управление заказами</h2>
+                  <div class="admin-toolbar">
+                    <label class="field-label"
+                      >Поиск по номеру<input
+                        class="field-input"
+                        data-order-search
+                        placeholder="ZY-…" /></label
+                    ><label class="field-label"
+                      >Статус<select class="field-select" data-order-filter>
+                        <option value="">Все статусы</option>
+                        <option>PENDING_PAYMENT</option>
+                        <option value="PAYMENT_REPORTED">
+                          Оплата сообщена
+                        </option>
+                        <option>PAID</option>
+                        <option>PROCESSING</option>
+                        <option>SHIPPED</option>
+                        <option>DELIVERED</option>
+                        <option>CANCELLED</option>
+                      </select></label
+                    ><button class="button button-secondary" data-load-orders>
+                      Обновить</button
+                    ><a
+                      class="button button-secondary"
+                      href="/api/v1/orders/export.csv"
+                      >Скачать CSV</a
+                    >
+                  </div>
+                  <div class="admin-overflow">
+                    <table class="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Заказ</th>
+                          <th>Покупатель / доставка</th>
+                          <th>Состав</th>
+                          <th>Сумма</th>
+                          <th>Статус</th>
+                          <th>История</th>
+                        </tr>
+                      </thead>
+                      <tbody data-orders-table></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+              <section class="admin-section" data-admin-panel="products">
+                <div class="panel">
+                  <h2>Цены и склад</h2>
+                  <p class="small-help">
+                    Укажите реальные цены и доступное количество. До этого
+                    покупатели не смогут оформить эти товары.
+                  </p>
+                  <div class="admin-overflow">
+                    <table class="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Товар</th>
+                          <th>Категория</th>
+                          <th>Цена, сом</th>
+                          <th>Остаток</th>
+                          <th>Витрина</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody data-products-table></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="panel" style="margin-top: 20px">
+                  <h2>Добавить товар</h2>
+                  <form class="form-grid" data-create-product>
+                    <label class="field-label"
+                      >URL slug<input
+                        class="field-input"
+                        name="slug"
+                        placeholder="macbook-air-m2"
+                        required /></label
+                    ><label class="field-label"
+                      >Название<input
+                        class="field-input"
+                        name="name"
+                        required /></label
+                    ><label class="field-label"
+                      >Бренд<input
+                        class="field-input"
+                        name="brand"
+                        value="Apple"
+                        required /></label
+                    ><label class="field-label"
+                      >Категория<select
+                        class="field-select"
+                        name="categoryId"
+                        data-product-categories
+                        required
+                      ></select></label
+                    ><label class="field-label"
+                      >Цена, сом<input
+                        class="field-input"
+                        name="price"
+                        type="number"
+                        min="1"
+                        required /></label
+                    ><label class="field-label"
+                      >Остаток<input
+                        class="field-input"
+                        name="stock"
+                        type="number"
+                        min="0"
+                        value="0"
+                        required /></label
+                    ><label class="field-label field-full"
+                      >Краткое описание<textarea
+                        class="field-textarea"
+                        name="description"
+                        required
+                      ></textarea></label
+                    ><label class="field-label"
+                      >Фотография товара<input
+                        class="field-input"
+                        name="imageFile"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        required /></label
+                    ><label class="field-label"
+                      >Характеристики JSON<input
+                        class="field-input"
+                        name="specifications"
+                        value="{}"
+                        required /></label
+                    ><button class="button button-primary field-full">
+                      Создать товар
+                    </button>
+                  </form>
+                </div>
+              </section>
+              <section class="admin-section" data-admin-panel="coupons">
+                <div class="panel">
+                  <h2>Промокоды</h2>
+                  <form class="admin-toolbar" data-create-coupon>
+                    <label class="field-label"
+                      >Код<input
+                        class="field-input"
+                        name="code"
+                        required /></label
+                    ><label class="field-label"
+                      >Скидка<select class="field-select" name="type">
+                        <option value="PERCENT">Процент</option>
+                        <option value="FIXED">Сумма, сом</option>
+                      </select></label
+                    ><label class="field-label"
+                      >Размер<input
+                        class="field-input"
+                        name="value"
+                        type="number"
+                        min="1"
+                        required /></label
+                    ><label class="field-label"
+                      >Мин. сумма<input
+                        class="field-input"
+                        name="minSubtotal"
+                        type="number"
+                        min="0"
+                        value="0" /></label
+                    ><label class="field-label"
+                      >Лимит использований<input
+                        class="field-input"
+                        name="usageLimit"
+                        type="number"
+                        min="1"
+                        placeholder="Без лимита" /></label
+                    ><label class="field-label"
+                      >Действует до<input
+                        class="field-input"
+                        name="expiresAt"
+                        type="datetime-local" /></label
+                    ><button class="button button-primary">
+                      Создать промокод
+                    </button>
+                  </form>
+                  <div class="admin-overflow">
+                    <table class="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Код</th>
+                          <th>Скидка</th>
+                          <th>Минимум</th>
+                          <th>Использовано</th>
+                          <th>Окончание</th>
+                          <th>Активен</th>
+                        </tr>
+                      </thead>
+                      <tbody data-coupons-table></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+              <section class="admin-section" data-admin-panel="reviews">
+                <div class="panel">
+                  <h2>Модерация отзывов</h2>
+                  <div class="review-moderation" data-review-queue></div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <span>© ZYNORA</span><span>Технологии будущего — уже сегодня.</span
+        ><a href="/">Вернуться в магазин</a>
+      </footer>
+    </div>
+    <dialog class="confirm-dialog" data-confirm-dialog>
+      <h2>Отменить заказ?</h2>
+      <p class="muted">Зарезервированные товары вернутся на склад.</p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" data-confirm-no type="button">
+          Назад</button
+        ><button class="button button-danger" data-confirm-yes type="button">
+          Отменить заказ
+        </button>
+      </div>
+    </dialog>
+    <script src="/scripts/admin.js" defer></script>
+  </body>
+</html>
