@@ -13,16 +13,24 @@ function csvCell(value) {
 }
 function escapeHtml(value) { return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]); }
 
+async function notifyOrderInBackground(orderId) {
+  try {
+    const claim = await prisma.order.updateMany({ where: { id: orderId, telegramAttempted: false }, data: { telegramAttempted: true } });
+    if (claim.count !== 1) return;
+    const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true, user: { select: { email: true } } } });
+    if (!order) return;
+    const notified = await sendOrderNotification(order);
+    await prisma.order.update({ where: { id: orderId }, data: { telegramNotified: notified, telegramNotificationError: notified ? null : "Проверьте доступность Telegram Bot API и настройки бота." } });
+  } catch (error) {
+    console.error(`Background Telegram notification failed for order ${orderId}: ${error.message}`);
+  }
+}
+
 router.post("/", async (req, res) => {
   try {
     const order = await createOrder(req.body, req.session.user?.id || null);
-    const claim = await prisma.order.updateMany({ where: { id: order.id, telegramAttempted: false }, data: { telegramAttempted: true } });
-    if (claim.count === 1) {
-      const orderForNotification = await prisma.order.findUnique({ where: { id: order.id }, include: { items: true, user: { select: { email: true } } } });
-      const notified = await sendOrderNotification(orderForNotification);
-      await prisma.order.update({ where: { id: order.id }, data: { telegramNotified: notified, telegramNotificationError: notified ? null : "Проверьте доступность Telegram Bot API и настройки бота." } });
-    }
-    res.status(201).json({ order: publicOrder(order), trackUrl: `/html/order.html?token=${encodeURIComponent(order.trackingToken)}` });
+    res.status(201).json({ order: publicOrder(order), trackUrl: `/track?token=${encodeURIComponent(order.trackingToken)}` });
+    setImmediate(() => { void notifyOrderInBackground(order.id); });
   } catch (error) {
     if (error instanceof OrderError) return res.status(error.status).json({ error: error.message });
     throw error;
