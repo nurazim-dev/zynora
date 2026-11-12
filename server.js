@@ -13,6 +13,7 @@ const { handleTelegramUpdate, startTelegramPolling } = require("./services/teleg
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
+const host = process.env.HOST || "0.0.0.0";
 const isProduction = process.env.NODE_ENV === "production";
 const PgSession = connectPgSimple;
 
@@ -23,6 +24,7 @@ if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.l
 app.disable("x-powered-by");
 const proxyHops = Number.parseInt(process.env.TRUST_PROXY_HOPS || "1", 10);
 app.set("trust proxy", isProduction ? Math.max(1, Number.isInteger(proxyHops) ? proxyHops : 1) : false);
+const safeLogPath = (requestPath) => requestPath.replace(/(\/orders\/track\/)[^/]+/g, "$1[redacted]");
 app.use((req, res, next) => {
   req.requestId = crypto.randomUUID();
   const started = Date.now();
@@ -31,7 +33,7 @@ app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
   res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-  res.on("finish", () => console.log(JSON.stringify({ level: "info", requestId: req.requestId, method: req.method, status: res.statusCode, durationMs: Date.now() - started })));
+  res.on("finish", () => console.log(JSON.stringify({ level: "info", requestId: req.requestId, method: req.method, path: safeLogPath(req.path), status: res.statusCode, durationMs: Date.now() - started })));
   next();
 });
 app.use(express.json({ limit: "32kb" }));
@@ -164,7 +166,7 @@ app.use((error, _req, res, _next) => {
   res.status(status).json({ error: status >= 500 ? "Внутренняя ошибка сервера." : error.message });
 });
 
-const server = app.listen(port, () => console.log(`ZYNORA server listening on http://localhost:${port}`));
+const server = app.listen(port, host, () => console.log(`ZYNORA server listening on ${host}:${port}`));
 startTelegramPolling();
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);

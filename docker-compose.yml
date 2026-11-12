@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: zynora
       POSTGRES_PASSWORD: zynora_dev
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - zynora-postgres:/var/lib/postgresql/data
     healthcheck:

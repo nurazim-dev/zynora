@@ -7,6 +7,20 @@
 
   const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const som = (value) => `${new Intl.NumberFormat("ru-RU").format(value || 0)} сом`;
+  const createUuid = () => {
+    const bytes = new Uint8Array(16);
+    try {
+      if (typeof globalThis.crypto?.randomUUID === "function") return globalThis.crypto.randomUUID();
+      if (typeof globalThis.crypto?.getRandomValues === "function") globalThis.crypto.getRandomValues(bytes);
+      else throw new Error("Web Crypto недоступен");
+    } catch {
+      for (let index = 0; index < bytes.length; index += 1) bytes[index] = Math.floor(Math.random() * 256);
+    }
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  };
   const readCart = () => {
     try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]").filter((item) => Number.isInteger(item.productId) && Number.isInteger(item.quantity)); }
     catch { return []; }
@@ -27,10 +41,21 @@
     setTimeout(() => item.remove(), 3600);
   };
   const api = async (url, options = {}) => {
-    const response = await fetch(url, { credentials: "same-origin", ...options, headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers } });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || "Не удалось выполнить запрос.");
-    return result;
+    const { signal, ...requestOptions } = options;
+    const controller = signal ? null : new AbortController();
+    const timeoutId = controller ? setTimeout(() => controller.abort(), 20000) : null;
+    try {
+      const response = await fetch(url, { credentials: "same-origin", ...requestOptions, signal: signal || controller.signal, headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers } });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Не удалось выполнить запрос.");
+      return result;
+    } catch (error) {
+      if (controller?.signal.aborted) throw new Error("Сервер долго не отвечает. Проверьте Wi-Fi и повторите попытку. Если заказ уже отправляли, повтор безопасен.");
+      if (error instanceof TypeError) throw new Error("Нет связи с сервером. Убедитесь, что Mac и это устройство в одной Wi-Fi сети, а сайт запущен.");
+      throw error;
+    } finally {
+      if (timeoutId) clearTimeout(timeoutId);
+    }
   };
   const productById = async (id) => {
     const cached = products.find((product) => product.id === id);
@@ -206,10 +231,11 @@
       const current = render(Number(form.dataset.discount || 0));
       if (!current.length) return toast("Добавьте товары в корзину.", "error");
       const submit = form.querySelector("button[type=submit]"); submit.disabled = true; submit.textContent = "Создаём заказ…";
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.items = current.map(({ productId, quantity }) => ({ productId, quantity }));
-      data.idempotencyKey = form.dataset.idempotencyKey || (form.dataset.idempotencyKey = crypto.randomUUID()); data.couponCode = form.dataset.coupon || "";
       try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        data.items = current.map(({ productId, quantity }) => ({ productId, quantity }));
+        data.idempotencyKey = form.dataset.idempotencyKey || (form.dataset.idempotencyKey = createUuid());
+        data.couponCode = form.dataset.coupon || "";
         const result = await api("/api/v1/orders", { method: "POST", body: JSON.stringify(data) });
         delete form.dataset.idempotencyKey;
         saveCart([]); location.assign(result.trackUrl);
